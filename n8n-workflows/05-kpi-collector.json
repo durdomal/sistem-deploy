@@ -1,0 +1,64 @@
+{
+  "name": "KPI Collector",
+  "nodes": [
+    {
+      "parameters": {"path": "sistem/kpi-collector", "responseMode": "responseNode", "options": {}},
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "id": "webhook-in"
+    },
+    {
+      "parameters": {"functionCode": "// payload: { project_id, sources: [{type:'meta_ads'|'ga4'|'instagram', account_id}] }\nconst payload = $input.first().json;\nreturn payload.sources.map(s => ({ json: { project_id: payload.project_id, source: s } }));"},
+      "name": "Split Sources",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "id": "split"
+    },
+    {
+      "parameters": {"conditions": {"string": [{"value1": "={{$json.source.type}}", "value2": "meta_ads"}]}},
+      "name": "Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "id": "router"
+    },
+    {
+      "parameters": {"functionCode": "// TODO: подключить Meta Ads MCP через remote HTTP когда есть OAuth.\nreturn [{ json: { source: $json.source.type, kpis: {reach: null, spend: null, note: 'Meta Ads MCP not authorized yet'} } }];"},
+      "name": "Meta Ads (stub)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [900, 220],
+      "id": "meta"
+    },
+    {
+      "parameters": {"functionCode": "// Fallback для GA4/instagram/etc.\nreturn [{ json: { source: $json.source.type, kpis: {note: 'source ' + $json.source.type + ' not implemented yet'} } }];"},
+      "name": "Other (stub)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [900, 380],
+      "id": "other"
+    },
+    {
+      "parameters": {"respondWith": "allEntries", "options": {}},
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300],
+      "id": "respond"
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Split Sources", "type": "main", "index": 0}]]},
+    "Split Sources": {"main": [[{"node": "Router", "type": "main", "index": 0}]]},
+    "Router": {"main": [
+      [{"node": "Meta Ads (stub)", "type": "main", "index": 0}],
+      [{"node": "Other (stub)", "type": "main", "index": 0}]
+    ]},
+    "Meta Ads (stub)": {"main": [[{"node": "Respond", "type": "main", "index": 0}]]},
+    "Other (stub)": {"main": [[{"node": "Respond", "type": "main", "index": 0}]]}
+  },
+  "meta": {"description": "Триггер: POST /webhook/sistem/kpi-collector {project_id, sources}. Реальные интеграции — по мере получения OAuth."}
+}

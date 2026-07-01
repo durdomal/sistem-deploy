@@ -1,0 +1,20 @@
+{
+  "name": "sistem-power-pack-universal",
+  "version": "1.0.0",
+  "description": "Универсальный power-pack для Sistem — точка входа + 3 новых нативных скилла. Существующие sistem-power-pack v0.3 скиллы остаются в своём плагине и вызываются через sistem_command.",
+  "author": "Taras (via Sistem Core)",
+  "skills": [
+    "skills/sistem",
+    "skills/kpi-report",
+    "skills/content-distribution",
+    "skills/competitor-watch"
+  ],
+  "requires_mcp_connectors": [
+    {
+      "name": "sistem",
+      "url": "https://sistem.globria.biz/mcp",
+      "note": "Bearer JWT из POST /auth/login"
+    }
+  ],
+  "notes": "Заменяет промежуточный sistem-control из Sprint 1. После установки удалить sistem-control."
+}

@@ -1,0 +1,109 @@
+# 4-й тестовый Project Pack — новая ниша (не связанная с текущими бизнесами Тараса).
+# Цель: проверить что скиллы работают без хардкода.
+
+project:
+  id: bistro-marina
+  name: Bistro Marina
+  niche: restaurant
+  status: active
+  owner: taras
+  tags: [restaurant, denia, mediterranean, seasonal, b2c]
+
+brand_pack:
+  name: Bistro Marina
+  palette: ["#0B3D5C", "#E8B14C", "#FAF7F0"]
+  fonts: ["Cormorant Garamond", "Inter"]
+  voice: warm-mediterranean
+  logo_url: https://cdn.example.com/bistro-marina/logo.svg
+
+catalog:
+  products:
+    - sku: MENU-LUNCH
+      name: Menu del día
+      price: 18
+      currency: EUR
+      description: 3 блюда + напиток, будни 13:00-16:00
+    - sku: SEAFOOD-PAELLA
+      name: Paella de marisco (per person, min 2)
+      price: 26
+      currency: EUR
+    - sku: BRUNCH-WKND
+      name: Weekend brunch
+      price: 22
+      currency: EUR
+      description: Суббота-воскресенье до 14:00
+
+audience:
+  segments:
+    - name: Expat professionals
+      demographic: 30-55, remote-work, Northern Europe/RU
+      geo: Dénia, Jávea, El Verger
+      insights: Ищут «своё место» на неделю, ценят стабильность меню и Wi-Fi
+    - name: Summer tourists
+      demographic: 25-65, семьи и пары
+      geo: летний трафик по побережью
+      insights: Приходят «попробовать местное», решают по фото на Google Maps + TripAdvisor
+    - name: Local Spanish crowd
+      demographic: 30-60, dénia residents
+      geo: Dénia центр
+      insights: Обедают в будни (menu del día), решают быстро, ценят цену/качество
+
+usps:
+  - Единственный ресторан в Дении с полноценным веганским меню
+  - Панорамная терраса с видом на марину
+  - Открытая кухня — можно смотреть готовку
+
+channels:
+  instagram:
+    handle: bistro.marina.denia
+  google_business:
+    place_id: "PLACEHOLDER_PLACE_ID"
+  website:
+    url: https://bistromarina.example
+  tiktok:
+    handle: bistromarinadenia
+
+competitors:
+  - name: La Barra de Miguel
+    url: https://labarrademiguel.example
+    strengths: [давно на рынке, локация в центре]
+    weaknesses: [устарел сайт, нет веганского меню, слабый Instagram]
+  - name: Nomada
+    url: https://nomada.example
+    strengths: [сильный digital, TripAdvisor top-5]
+    weaknesses: [цены выше, нет обеденного меню]
+
+goals:
+  primary: increase-covers
+  secondary: [grow-google-reviews, weekend-brunch-fullbook]
+  kpis:
+    - name: weekday_lunch_covers
+      target: 45
+      window: day
+    - name: google_reviews_added_monthly
+      target: 20
+      window: month
+    - name: instagram_followers
+      target: 8000
+      window: quarter
+
+budget:
+  paid_ads_monthly: 300
+  currency: EUR
+  per_channel:
+    meta: 200
+    google: 100
+
+voice_pack:
+  examples:
+    - "Средиземноморская кухня без пафоса. Открытая кухня, панорамная терраса."
+    - "Menu del dia — 18 евро, будни, честные порции."
+  taboos:
+    - "Не пишем 'fusion', 'authentic', 'elevated'"
+    - "Не используем эмодзи 🍷🍝 в подписях"
+  tone: тёплый, простой, местный
+
+meta:
+  version: 1
+  updated_at: "2026-07-01T18:00:00Z"
+  updated_by: taras

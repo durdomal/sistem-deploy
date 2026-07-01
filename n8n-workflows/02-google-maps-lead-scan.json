@@ -1,0 +1,50 @@
+{
+  "name": "Google Maps Lead Scan",
+  "nodes": [
+    {
+      "parameters": {"path": "sistem/gmaps-lead-scan", "responseMode": "responseNode", "options": {}},
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "id": "webhook-in"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/acts/compass~crawler-google-places/run-sync-get-dataset-items?token={{ $env.APIFY_TOKEN }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"searchStringsArray\": [ $json.query ], \"locationQuery\": $json.location, \"maxCrawledPlacesPerSearch\": ($json.limit || 30) }",
+        "method": "POST",
+        "options": {"redirect": {"redirect": {"followRedirects": true}}}
+      },
+      "name": "Apify — Google Maps",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "id": "apify"
+    },
+    {
+      "parameters": {"functionCode": "const items = $input.first().json;\nconst leads = (Array.isArray(items) ? items : []).filter(x => x.phone || x.email || x.website).map(x => ({\n  name: x.title, address: x.address, phone: x.phone, email: x.emails?.[0],\n  website: x.website, rating: x.totalScore, reviews: x.reviewsCount, place_id: x.placeId,\n}));\nreturn leads.map(l => ({ json: l }));"},
+      "name": "Filter & Normalize",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "id": "normalize"
+    },
+    {
+      "parameters": {"respondWith": "allEntries", "options": {}},
+      "name": "Respond to Sistem",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "id": "respond"
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Apify — Google Maps", "type": "main", "index": 0}]]},
+    "Apify — Google Maps": {"main": [[{"node": "Filter & Normalize", "type": "main", "index": 0}]]},
+    "Filter & Normalize": {"main": [[{"node": "Respond to Sistem", "type": "main", "index": 0}]]}
+  },
+  "meta": {"description": "Триггер: POST /webhook/sistem/gmaps-lead-scan {query, location, limit}. Требует APIFY_TOKEN. Используется в lead-outreach + sell-sites-localbiz."}
+}

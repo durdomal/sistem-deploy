@@ -1,0 +1,85 @@
+# Sistem Core — production docker-compose (Sprint 0 skeleton)
+# Разворачивается в /opt/sistem/ на VPS 152.53.231.15
+# Отдельно от globria/postiz — свой стек, свои volumes, свои порты.
+#
+# Открывать наружу только 8010 через nginx (sistem.globria.biz).
+# Redis и Postgres — только localhost (127.0.0.1) внутри docker network.
+
+name: sistem
+
+services:
+
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: sistem-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ../db:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: sistem-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "127.0.0.1:6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ../app
+      dockerfile: Dockerfile
+    container_name: sistem-api
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    environment:
+      SISTEM_ENV: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      SISTEM_SECRETS_KEY: ${SISTEM_SECRETS_KEY}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+    ports:
+      - "127.0.0.1:8010:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    build:
+      context: ../app
+      dockerfile: Dockerfile
+    container_name: sistem-worker
+    restart: unless-stopped
+    depends_on:
+      redis: { condition: service_healthy }
+      db: { condition: service_healthy }
+    environment:
+      SISTEM_ENV: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      SISTEM_SECRETS_KEY: ${SISTEM_SECRETS_KEY}
+    command: ["rq", "worker", "--url", "redis://:${REDIS_PASSWORD}@redis:6379/0", "sistem"]

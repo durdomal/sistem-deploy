@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sistem.globria.biz/schemas/project-pack.v1.json",
+  "title": "Sistem Project Pack v1",
+  "type": "object",
+  "required": ["project", "brand_pack", "channels"],
+  "additionalProperties": false,
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "niche", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,47}$",
+          "description": "kebab-case slug, unique per user"
+        },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "niche": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "status": { "enum": ["active", "paused", "archived"] },
+        "owner": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+
+    "brand_pack": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "palette": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$" }
+        },
+        "fonts": { "type": "array", "items": { "type": "string" } },
+        "voice": { "type": "string" },
+        "logo_url": { "type": "string", "format": "uri" },
+        "brand_pack_id": { "type": "string" }
+      }
+    },
+
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["sku", "name"],
+            "additionalProperties": true,
+            "properties": {
+              "sku": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "currency": { "type": "string", "pattern": "^[A-Z]{3}$", "default": "EUR" },
+              "description": { "type": "string" },
+              "images": { "type": "array", "items": { "type": "string", "format": "uri" } },
+              "metadata": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "segments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "demographic": { "type": "string" },
+              "geo": { "type": "string" },
+              "insights": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "usps": { "type": "array", "items": { "type": "string" } },
+
+    "channels": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "instagram": {
+          "type": "object",
+          "properties": {
+            "handle": { "type": "string" },
+            "followers": { "type": "integer", "minimum": 0 },
+            "token": { "type": "string" }
+          }
+        },
+        "facebook": {
+          "type": "object",
+          "properties": {
+            "page_id": { "type": "string" },
+            "token": { "type": "string" }
+          }
+        },
+        "tiktok": {
+          "type": "object",
+          "properties": { "handle": { "type": "string" } }
+        },
+        "telegram": {
+          "type": "object",
+          "properties": {
+            "chat_id": { "type": "string" },
+            "bot_token": { "type": "string" }
+          }
+        },
+        "website": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "analytics_id": { "type": "string" }
+          }
+        },
+        "google_business": {
+          "type": "object",
+          "properties": { "place_id": { "type": "string" } }
+        },
+        "linkedin": {
+          "type": "object",
+          "properties": { "company_id": { "type": "string" } }
+        }
+      }
+    },
+
+    "competitors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "strengths": { "type": "array", "items": { "type": "string" } },
+          "weaknesses": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+
+    "goals": {
+      "type": "object",
+      "properties": {
+        "primary": { "type": "string" },
+        "secondary": { "type": "array", "items": { "type": "string" } },
+        "kpis": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "target"],
+            "properties": {
+              "name": { "type": "string" },
+              "target": { "type": "number" },
+              "window": { "enum": ["day", "week", "month", "quarter", "year"] },
+              "current": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+
+    "budget": {
+      "type": "object",
+      "properties": {
+        "paid_ads_monthly": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "per_channel": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+
+    "voice_pack": {
+      "type": "object",
+      "properties": {
+        "examples": { "type": "array", "items": { "type": "string" } },
+        "taboos":   { "type": "array", "items": { "type": "string" } },
+        "tone":     { "type": "string" }
+      }
+    },
+
+    "integrations": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+
+    "meta": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "integer", "const": 1 },
+        "updated_at": { "type": "string", "format": "date-time" },
+        "updated_by": { "type": "string" }
+      }
+    }
+  }
+}

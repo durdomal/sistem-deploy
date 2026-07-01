@@ -1,0 +1,54 @@
+{
+  "name": "Competitor Monitor",
+  "nodes": [
+    {
+      "parameters": {"path": "sistem/competitor-monitor", "responseMode": "responseNode", "options": {}},
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "id": "webhook-in"
+    },
+    {
+      "parameters": {
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {"parameters": [
+          {"name": "Authorization", "value": "Bearer {{ $env.FIRECRAWL_API_KEY }}"},
+          {"name": "Content-Type", "value": "application/json"}
+        ]},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"url\": $json.url, \"formats\": [\"markdown\"] }",
+        "method": "POST"
+      },
+      "name": "Firecrawl — Scrape",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "id": "firecrawl"
+    },
+    {
+      "parameters": {"functionCode": "const md = ($input.first().json.data?.markdown || '').slice(0, 8000);\nreturn [{ json: { competitor_url: $node.Webhook.json.url, snapshot_md: md, scraped_at: new Date().toISOString() } }];"},
+      "name": "Extract Snapshot",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "id": "extract"
+    },
+    {
+      "parameters": {"respondWith": "firstIncomingItem", "options": {}},
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "id": "respond"
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Firecrawl — Scrape", "type": "main", "index": 0}]]},
+    "Firecrawl — Scrape": {"main": [[{"node": "Extract Snapshot", "type": "main", "index": 0}]]},
+    "Extract Snapshot": {"main": [[{"node": "Respond", "type": "main", "index": 0}]]}
+  },
+  "meta": {"description": "Триггер: POST /webhook/sistem/competitor-monitor {url}. Возвращает markdown-snapshot. Sistem запоминает в memory_project для diff."}
+}

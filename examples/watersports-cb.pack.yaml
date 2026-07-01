@@ -1,0 +1,97 @@
+# Пример Project Pack v1 для Watersports Costa Blanca.
+# Используется как эталон при валидации JSON Schema.
+
+project:
+  id: watersports-cb
+  name: Watersports Costa Blanca
+  niche: sup-rental
+  status: active
+  owner: taras
+  tags: [sup, dénia, jávea, seasonal, b2c]
+
+brand_pack:
+  name: Watersports Costa Blanca
+  palette: ["#0A6AA1", "#FFC857", "#111111"]
+  fonts: [Inter, "Playfair Display"]
+  voice: friendly-locals
+  logo_url: https://cdn.watersports-costablanca.es/logo.svg
+
+catalog:
+  products:
+    - sku: SUP-STD-1H
+      name: SUP standard, 1 час
+      price: 15
+      currency: EUR
+      description: Стандартная надувная доска, весло, лиш, жилет. Инструктаж 5 мин.
+    - sku: SUP-PREM-DAY
+      name: SUP premium, весь день
+      price: 45
+      currency: EUR
+      description: Премиум доска (жёсткая), сумка, дневная аренда.
+
+audience:
+  segments:
+    - name: Families with kids
+      demographic: 30-50 y.o., пара + 1-2 ребёнка
+      geo: Dénia, Jávea, Moraira, Calpe
+      insights: Ищут спокойную активность на выходные, бронируют утром через инсту
+    - name: Digital nomads
+      demographic: 25-40 y.o., соло/пара
+      geo: Costa Blanca, короткое пребывание
+      insights: Приезжают на неделю-две, ищут «попробовать» — берут на 1-2 часа
+
+usps:
+  - Первый в Дении прокат с русскоязычным сервисом
+  - Точка выдачи прямо на пляже Marineta Cassiana
+  - Бесплатная фотосессия на воде с брендированным контентом
+
+channels:
+  instagram:
+    handle: watersports.costablanca
+    followers: 0
+  facebook:
+    page_id: "0"
+  website:
+    url: https://watersports-costablanca.es
+
+competitors:
+  - name: SUP School Denia
+    url: https://supschooldenia.com
+    strengths: [давно на рынке, известная школа]
+    weaknesses: [ориентация только на уроки, дорого, нет проката на час]
+  - name: Dénia Watersports
+    url: https://deniawatersports.com
+    strengths: [большой парк техники]
+    weaknesses: [нет русского языка, слабый инсту]
+
+goals:
+  primary: increase-bookings
+  secondary: [grow-instagram-followers, build-content-library]
+  kpis:
+    - name: weekly_bookings
+      target: 25
+      window: week
+    - name: instagram_followers
+      target: 5000
+      window: quarter
+
+budget:
+  paid_ads_monthly: 200
+  currency: EUR
+  per_channel:
+    meta: 150
+    google: 50
+
+voice_pack:
+  examples:
+    - "Утро на воде — лучший старт дня. Приходи в 8:00, поймаешь тишину и лучший свет."
+    - "Первый раз на SUP? 5 минут инструктажа — и ты уже гребёшь. Обещаем."
+  taboos:
+    - "Не используем сленг и эмодзи-волны в подписях"
+    - "Не обещаем 'адреналин' — мы про спокойствие и природу"
+  tone: тёплый, доступный, местный
+
+meta:
+  version: 1
+  updated_at: "2026-07-01T09:00:00Z"
+  updated_by: taras

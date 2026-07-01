@@ -1,0 +1,16 @@
+{
+  "name": "sistem-control",
+  "version": "1.0.0",
+  "description": "Единая точка входа в Sistem — универсальную AI-OS Тараса. Один скилл-обёртка над remote MCP.",
+  "author": "Taras (via Sistem Core)",
+  "skills": [
+    "skills/sistem"
+  ],
+  "requires_mcp_connectors": [
+    {
+      "name": "sistem",
+      "url": "https://sistem.globria.biz/mcp",
+      "note": "Регистрируется отдельно в Customize → Connectors как Custom MCP с Bearer JWT."
+    }
+  ]
+}

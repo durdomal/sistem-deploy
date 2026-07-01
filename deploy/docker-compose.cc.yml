@@ -1,0 +1,23 @@
+# Claude Code daemon как отдельный сервис в стеке Sistem.
+# Запуск: docker compose -f docker-compose.yml -f docker-compose.cc.yml --env-file .env up -d cc-daemon
+
+services:
+  cc-daemon:
+    build:
+      context: ../cc-daemon
+      dockerfile: Dockerfile
+    container_name: sistem-cc-daemon
+    restart: unless-stopped
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      CC_DAEMON_SECRET: ${CC_DAEMON_SECRET}
+      CC_WORKSPACES: /workspaces
+    volumes:
+      - ./data/cc-workspaces:/workspaces
+    ports:
+      - "127.0.0.1:8020:8020"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8020/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5

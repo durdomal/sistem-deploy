@@ -1,0 +1,68 @@
+{
+  "name": "Daily Server Health",
+  "nodes": [
+    {
+      "parameters": {"path": "sistem/daily-server-health", "options": {}},
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "id": "webhook-in"
+    },
+    {
+      "parameters": {
+        "url": "https://sistem.globria.biz/bridge/vps/152.53.231.15/run",
+        "sendHeaders": true,
+        "headerParameters": {"parameters": [
+          {"name": "Authorization", "value": "Bearer ={{ $env.SISTEM_JWT }}"}
+        ]},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"cmd\": \"uptime && df -h && free -h && docker ps --format 'table {{.Names}}\\t{{.Status}}'\" }",
+        "method": "POST"
+      },
+      "name": "Run Health Cmd via Sistem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "id": "health-run"
+    },
+    {
+      "parameters": {"functionCode": "const out = $input.first().json;\nconst red = /(unhealthy|Exit|error|Error)/i.test(out.stdout || '');\nreturn [{ json: { alert: red, summary: (out.stdout||'').slice(0, 1200) } }];"},
+      "name": "Classify",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "id": "classify"
+    },
+    {
+      "parameters": {"conditions": {"boolean": [{"value1": "={{$json.alert}}", "value2": true}]}},
+      "name": "Alert?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "id": "if-alert"
+    },
+    {
+      "parameters": {
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"chat_id\": \"{{ $env.TELEGRAM_ADMIN_CHAT }}\", \"text\": \"⚠️ Sistem VPS health alert:\\n\" + $json.summary }",
+        "method": "POST"
+      },
+      "name": "Telegram Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1140, 220],
+      "id": "tg-alert"
+    }
+  ],
+  "connections": {
+    "Webhook": {"main": [[{"node": "Run Health Cmd via Sistem", "type": "main", "index": 0}]]},
+    "Run Health Cmd via Sistem": {"main": [[{"node": "Classify", "type": "main", "index": 0}]]},
+    "Classify": {"main": [[{"node": "Alert?", "type": "main", "index": 0}]]},
+    "Alert?": {"main": [[{"node": "Telegram Alert", "type": "main", "index": 0}], []]}
+  },
+  "meta": {"description": "Cron trigger в UI + Webhook на sistem/daily-server-health. Заменяет ручной daily server-health navyq."}
+}
