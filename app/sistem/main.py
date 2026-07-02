@@ -14,7 +14,7 @@ from sistem.config import get_settings
 from sistem.db import ping as db_ping, session_ctx
 from sistem.services.bootstrap import bootstrap as bootstrap_defaults
 from sistem.services.queue import get_redis
-from sistem.routers import auth, bridges, command, mcp, memory, projects, skills, system
+from sistem.routers import auth, bridges, command, mcp, memory, oauth, projects, skills, system
 
 log = logging.getLogger("sistem")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -83,6 +83,7 @@ app.include_router(skills.router, prefix="/skills", tags=["skills"])
 app.include_router(bridges.router, prefix="/bridge", tags=["bridges"])
 app.include_router(system.router, tags=["system"])
 app.include_router(mcp.router, prefix="/mcp", tags=["mcp"])
+app.include_router(oauth.router, tags=["oauth"])
 
 
 @app.exception_handler(Exception)
