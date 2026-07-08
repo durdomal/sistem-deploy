@@ -1,5 +1,6 @@
 {
   "name": "Competitor Monitor",
+  "active": false,
   "nodes": [
     {
       "parameters": {"path": "sistem/competitor-monitor", "responseMode": "responseNode", "options": {}},

@@ -1,5 +1,6 @@
 {
   "name": "Daily Server Health",
+  "active": false,
   "nodes": [
     {
       "parameters": {"path": "sistem/daily-server-health", "options": {}},

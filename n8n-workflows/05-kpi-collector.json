@@ -1,5 +1,6 @@
 {
   "name": "KPI Collector",
+  "active": false,
   "nodes": [
     {
       "parameters": {"path": "sistem/kpi-collector", "responseMode": "responseNode", "options": {}},

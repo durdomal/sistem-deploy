@@ -1,5 +1,6 @@
 {
   "name": "Postiz Schedule Post",
+  "active": false,
   "nodes": [
     {
       "parameters": {"path": "sistem/postiz-schedule", "responseMode": "responseNode", "options": {}},

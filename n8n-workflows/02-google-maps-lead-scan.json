@@ -1,5 +1,6 @@
 {
   "name": "Google Maps Lead Scan",
+  "active": false,
   "nodes": [
     {
       "parameters": {"path": "sistem/gmaps-lead-scan", "responseMode": "responseNode", "options": {}},
