@@ -136,13 +136,18 @@ TOOLS = [
 # ─── auth для MCP ────────────────────────────────────────────
 
 async def _mcp_user(creds: HTTPAuthorizationCredentials = Depends(_bearer), session=Depends(get_session)) -> User:
+    from uuid import UUID
     try:
         payload = decode_token(creds.credentials)
     except ValueError as e:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail=str(e))
     if payload.get("type") != "access":
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="need access token")
-    user = (await session.execute(select(User).where(User.id == payload.get("sub")))).scalar_one_or_none()
+    try:
+        uid = UUID(payload.get("sub"))
+    except (TypeError, ValueError):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="bad sub")
+    user = (await session.execute(select(User).where(User.id == uid))).scalar_one_or_none()
     if not user:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="user gone")
     return user

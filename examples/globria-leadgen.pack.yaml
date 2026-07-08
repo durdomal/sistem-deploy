@@ -1,0 +1,100 @@
+# Project Pack: Globria lead-gen + Jarvis
+project:
+  id: globria
+  name: Globria (lead-gen + Jarvis)
+  niche: b2b-leadgen
+  status: active
+  owner: taras
+  tags: [leadgen, saas, agency, b2b, high-volume]
+
+brand_pack:
+  name: Globria
+  palette: ["#0A6AA1", "#00D4A0", "#0F172A"]
+  fonts: [Inter, "JetBrains Mono"]
+  voice: technical-founder
+  logo_url: https://globria.biz/logo.svg
+
+catalog:
+  products:
+    - sku: LEADGEN-STARTER
+      name: Lead-gen starter (200 контактов/мес)
+      price: 490
+      currency: EUR
+      description: Целевые лиды, ниша по брифу, до 200 в месяц.
+    - sku: LEADGEN-PRO
+      name: Lead-gen pro (1000 контактов/мес)
+      price: 1900
+      currency: EUR
+      description: 1000 верифицированных лидов + первичный аутрич через Jarvis.
+    - sku: JARVIS-BOT
+      name: Jarvis outreach bot (managed)
+      price: 900
+      currency: EUR
+      description: Мультиканальный аутрич-бот под ключ, поддержка + отчёты.
+
+audience:
+  segments:
+    - name: Small agencies Europe
+      demographic: 3-30 человек, digital/perf marketing
+      geo: EU
+      insights: Своих продажников не хватает, ищут дешёвый lead-gen канал
+    - name: SaaS founders
+      demographic: solo/small team, seed-A
+      geo: EU/US
+      insights: Ищут первых 100 клиентов, готовы платить за скорость
+
+usps:
+  - Не парсер, а полноценный lead-gen pipeline
+  - Jarvis обрабатывает 10k+ контактов/день без ручной работы
+  - EU-compliant (GDPR/LSSI), не Warmup серым
+
+channels:
+  website:
+    url: https://globria.biz
+  linkedin:
+    company_id: "0"
+  telegram:
+    chat_id: "0"
+
+competitors:
+  - name: Apollo.io
+    strengths: [большая база, всем известно]
+    weaknesses: [не EU-first, дорого на масштабе]
+  - name: Lemlist
+    strengths: [хороший UX]
+    weaknesses: [только outreach, не lead-gen]
+
+goals:
+  primary: sign-retainers
+  secondary: [ship-jarvis-v2, close-founder-deals]
+  kpis:
+    - name: monthly_retainers
+      target: 5
+      window: month
+    - name: monthly_revenue
+      target: 8000
+      window: month
+    - name: qualified_leads
+      target: 100
+      window: month
+
+budget:
+  paid_ads_monthly: 500
+  currency: EUR
+  per_channel:
+    linkedin: 300
+    google: 200
+
+voice_pack:
+  examples:
+    - "Не даём демо-эккаунтов. Даём результат за первый месяц или возврат."
+    - "Jarvis обрабатывает 10k контактов в сутки. Не парсер — pipeline."
+  taboos:
+    - "Не продаём как SaaS-подписку, продаём managed"
+    - "Никакого growth-hacking жаргона"
+  tone: technical, конкретный, founder-to-founder
+
+meta:
+  version: 1
+  updated_at: "2026-07-02T00:00:00Z"
+  updated_by: taras

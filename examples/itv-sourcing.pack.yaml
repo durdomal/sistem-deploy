@@ -1,0 +1,93 @@
+# Project Pack: ITV / универсальный подбор
+project:
+  id: itv-sourcing
+  name: ITV / Sourcing
+  niche: car-import-sourcing
+  status: active
+  owner: taras
+  tags: [sourcing, import, cars, universal, b2c]
+
+brand_pack:
+  name: ITV Costa Blanca
+  palette: ["#111827", "#F59E0B", "#FFFFFF"]
+  fonts: [Inter, "Space Grotesk"]
+  voice: expert-mentor
+  logo_url: https://itvcostablanca.es/logo.svg
+
+catalog:
+  products:
+    - sku: SOURCING-STD
+      name: Подбор авто под ключ, стандарт
+      price: 1500
+      currency: EUR
+      description: Поиск + оценка + сделка + логистика ES.
+    - sku: SOURCING-PREM
+      name: Подбор премиум-авто
+      price: 3000
+      currency: EUR
+      description: Премиум-сегмент, торг с дилером, полное сопровождение матрикуляции.
+
+audience:
+  segments:
+    - name: Русскоязычные жители Costa Blanca
+      demographic: 30-55 y.o., оседлые, доход средний+
+      geo: Alicante, Valencia, Málaga
+      insights: Хотят «своего человека», боятся немецких дилеров и AEAT
+    - name: Испанцы-бизнесмены
+      demographic: 35-60 y.o., малый бизнес
+      geo: Comunidad Valenciana
+      insights: Ищут выгодную сделку, ценят прозрачность и цену под ключ
+
+usps:
+  - Реальные сделки в Дении, не онлайн-магазин
+  - Расчёт landed-cost за 30 минут, не «примерно»
+  - Всё оформление AEAT/матрикуляция включено
+
+channels:
+  instagram:
+    handle: itv.costablanca
+    followers: 0
+  website:
+    url: https://itvcostablanca.es
+  facebook:
+    page_id: "0"
+
+competitors:
+  - name: Local dealers Dénia
+    strengths: [локальность]
+    weaknesses: [нет русского, нет прозрачных цен на импорт]
+
+goals:
+  primary: close-deals
+  secondary: [build-inventory-visibility, generate-leads]
+  kpis:
+    - name: monthly_deals
+      target: 3
+      window: month
+    - name: instagram_followers
+      target: 2000
+      window: quarter
+    - name: website_leads
+      target: 20
+      window: month
+
+budget:
+  paid_ads_monthly: 300
+  currency: EUR
+  per_channel:
+    meta: 200
+    google: 100
+
+voice_pack:
+  examples:
+    - "Считаю под ключ, а не 'примерно'. AEAT и матрикуляция — на нас."
+    - "Тестовая сделка бесплатно: покажу как считаю landed-cost на реальном авто."
+  taboos:
+    - "Не 'мы поможем' — 'мы сделаем и вот цифры'"
+    - "Не обещаем цену без данных"
+  tone: конкретный, экспертный, без воды
+
+meta:
+  version: 1
+  updated_at: "2026-07-02T00:00:00Z"
+  updated_by: taras

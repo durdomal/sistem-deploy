@@ -48,7 +48,12 @@ async def refresh(body: RefreshBody, session: SessionDep):
     if payload.get("type") != "refresh":
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="wrong token type")
     sub = payload.get("sub")
-    user = (await session.execute(select(User).where(User.id == sub))).scalar_one_or_none()
+    from uuid import UUID
+    try:
+        sub_uuid = UUID(sub)
+    except (TypeError, ValueError):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="bad sub")
+    user = (await session.execute(select(User).where(User.id == sub_uuid))).scalar_one_or_none()
     if not user or user.status != "active":
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="user gone")
     return TokenPair(
