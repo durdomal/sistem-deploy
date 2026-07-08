@@ -9,7 +9,7 @@ import uuid
 from typing import Any
 
 from sqlalchemy import JSON, String, TypeDecorator
-from sqlalchemy.dialects.postgresql import UUID as PG_UUID
+from sqlalchemy.dialects.postgresql import INET as PG_INET, UUID as PG_UUID
 
 
 class UUID_(TypeDecorator):
@@ -55,5 +55,17 @@ ARRAY_ = JSON
 # UUIDArray → JSON (список строк)
 UUIDArray_ = JSON
 
-# INET → String(45)
-INET_ = String
+class INET_(TypeDecorator):
+    """inet → нативный PG ``inet`` в проде, String(45) в SQLite (тесты).
+
+    audit_log.ip объявлен как ``inet``. String-бинд ломает INSERT:
+    ``column "ip" is of type inet but expression is of type character varying``
+    (даже для NULL — тип выражения не совпадает).
+    """
+    impl = String(45)
+    cache_ok = True
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(PG_INET())
+        return dialect.type_descriptor(String(45))
