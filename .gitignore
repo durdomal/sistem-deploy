@@ -1,0 +1,38 @@
+# ── Секреты (ЖЁСТКО: .env никогда в репо, только .env.example) ──
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+deploy/.env
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# ── БД / рантайм ──
+*.sqlite
+*.sqlite3
+*.db
+
+# ── IDE / ОС ──
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ── Логи ──
+*.log
