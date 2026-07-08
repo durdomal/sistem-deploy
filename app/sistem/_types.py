@@ -9,18 +9,30 @@ import uuid
 from typing import Any
 
 from sqlalchemy import JSON, String, TypeDecorator
+from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 
 
 class UUID_(TypeDecorator):
-    """UUID → PG UUID в проде, TEXT(36) в SQLite. Возвращает uuid.UUID."""
+    """UUID → нативный PG ``uuid`` в проде (asyncpg), TEXT(36) в SQLite. Возвращает uuid.UUID.
+
+    ВАЖНО: db/schema.sql объявляет id/user_id как нативный ``uuid``. Если биндить
+    значение как строку (String), Postgres бьёт
+    ``operator does not exist: uuid = character varying`` на КАЖДОМ запросе с фильтром
+    по id. Поэтому в PG используем нативный тип (bind — uuid.UUID), в SQLite — TEXT(36).
+    """
     impl = String(36)
     cache_ok = True
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(PG_UUID(as_uuid=True))
+        return dialect.type_descriptor(String(36))
 
     def process_bind_param(self, value: Any, dialect):
         if value is None:
             return None
-        if isinstance(value, uuid.UUID):
-            return str(value)
+        if dialect.name == "postgresql":
+            return value if isinstance(value, uuid.UUID) else uuid.UUID(str(value))
         return str(value)
 
     def process_result_value(self, value: Any, dialect):
