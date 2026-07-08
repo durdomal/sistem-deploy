@@ -49,6 +49,10 @@ services:
       dockerfile: Dockerfile
     container_name: sistem-api
     restart: unless-stopped
+    volumes:
+      # VPS-bridge SSH key (host → container). Без этого sistem_run_on_vps
+      # падает: asyncssh не находит /opt/sistem/secrets/id_ed25519 внутри контейнера.
+      - /opt/sistem/secrets:/opt/sistem/secrets:ro
     depends_on:
       db: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -74,6 +78,9 @@ services:
       dockerfile: Dockerfile
     container_name: sistem-worker
     restart: unless-stopped
+    volumes:
+      # VPS-bridge SSH key (host → container) — воркер тоже может ходить по мосту.
+      - /opt/sistem/secrets:/opt/sistem/secrets:ro
     depends_on:
       redis: { condition: service_healthy }
       db: { condition: service_healthy }
