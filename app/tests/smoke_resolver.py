@@ -66,6 +66,15 @@ for text, expected in NICHE_CASES.items():
     r = resolve(text, known_projects=KP)
     check(r.project_id == expected, f"niche {text!r} -> {r.project_id} (exp {expected})")
 
+# ── 2b. Sprint 7 universality: НОВАЯ ниша (ресторан), ноль правок кода ──
+KP7 = KP + [{"slug": "resto-denia", "name": "Bistró Marina Dénia", "niche": "restaurant"}]
+r = resolve("аудитируй resto-denia", known_projects=KP7)
+check(r.skill == "marketing-audit" and r.project_id == "resto-denia",
+      f"universality: аудитируй resto-denia -> {r.skill}/{r.project_id}")
+r = resolve("сделай пост про меню resto-denia", known_projects=KP7)
+check(r.skill == "content-reels" and r.project_id == "resto-denia",
+      f"universality: пост resto-denia -> {r.skill}/{r.project_id}")
+
 # ── 3. explicit project= перебивает авто-свитч ─────────────────
 r = resolve("сделай пост project=wcb", known_projects=KP)
 check(r.project_id == "wcb" and r.skill == "content-reels", "explicit project= override")

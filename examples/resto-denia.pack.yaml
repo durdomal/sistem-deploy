@@ -1,0 +1,86 @@
+# Project Pack v1 — resto-denia (тест универсальности Sistem, Sprint 7).
+# 4-й проект НОВОЙ ниши (ресторан) для проверки zero-config: скиллы и резолвер
+# должны отработать «аудитируй resto-denia» без единой правки кода.
+
+project:
+  id: resto-denia
+  name: Bistró Marina Dénia
+  niche: restaurant
+  status: active
+  owner: taras
+  tags: [restaurant, dénia, costa-blanca, b2c, mediterranean]
+
+brand_pack:
+  name: Bistró Marina Dénia
+  palette: ["#1B4965", "#CAE9FF", "#E4572E"]
+  fonts: [Poppins, "Cormorant Garamond"]
+  voice: warm-mediterranean
+  logo_url: https://cdn.bistro-marina.es/logo.svg
+
+catalog:
+  products:
+    - sku: MENU-DIA
+      name: Menú del día
+      price: 16
+      currency: EUR
+      description: Три блюда + напиток. Обед по будням, местные сезонные продукты.
+    - sku: ARROZ-SENYORET
+      name: Arroz del senyoret
+      price: 22
+      currency: EUR
+      description: Фирменный рис с морепродуктами (мин. 2 персоны), сигнатура заведения.
+
+audience:
+  segments:
+    - name: Local families
+      demographic: 30-60 y.o., жители Дении и окрестностей
+      geo: Dénia, Els Poblets, Jávea
+      insights: Ходят на menú del día в будни, бронируют выходные заранее
+    - name: Tourists & nomads
+      demographic: 25-55 y.o., туристы Costa Blanca
+      geo: Costa Blanca, короткое пребывание
+      insights: Ищут «аутентичный рис у моря», решают по фото и отзывам Google
+
+usps:
+  - Рис по рецепту семьи, свежая рыба с рынка Дении каждое утро
+  - Терраса с видом на марину, 3 минуты от порта
+  - Меню на 3 языках (ES/EN/RU), безглютеновые опции
+
+channels:
+  instagram:
+    handle: bistro.marina.denia
+    followers: 0
+  website:
+    url: https://bistro-marina.es
+  google_business:
+    place_id: "PLACEHOLDER_GOOGLE_PLACE_ID"
+
+competitors:
+  - name: El Raset
+    url: https://grupoelraset.com
+    strengths: [известное имя, набережная]
+    weaknesses: [высокий чек, слабый онлайн-контент]
+
+goals:
+  primary: increase-reservations
+  secondary: [grow-google-reviews, build-instagram-presence]
+  kpis:
+    - name: weekly_covers
+      target: 350
+      window: week
+    - name: google_reviews
+      target: 200
+      window: quarter
+
+voice_pack:
+  examples:
+    - "Сегодня в меню — арроз с рынка. Столик у воды ещё есть, бронируй на вечер."
+    - "Обед по-средиземноморски: menú del día, 16 €, три блюда без спешки."
+  taboos:
+    - "Не обещаем 'лучший ресторан города' — говорим про продукт и место"
+  tone: тёплый, гостеприимный, средиземноморский
+
+meta:
+  version: 1
+  updated_at: "2026-07-08T10:00:00Z"
+  updated_by: taras
