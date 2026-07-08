@@ -10,7 +10,7 @@
 
 **Читать вместе с:** `ARCHITECTURE.md` §7 (Skill Library), §7bis (Integrations Registry), §11 (Спринты).
 
-**Last sync:** 2026-07-01 (после Sprint 2 close).
+**Last sync:** 2026-07-08 (Claude Code: Sprint 2/6/7 + Sprint 3 defer).
 
 ---
 
@@ -105,7 +105,13 @@ Live remote-коннекторы, работают уже сейчас. В Sprin
 
 ## 7. Расхождения и вопросы
 
-Пусто на 2026-07-01. Заполняется когда живая очередь и Sistem-реальность расходятся.
+**Статус спринтов на 2026-07-08 (Claude Code):**
+- ✅ Sprint 2 — 5 n8n workflow готовы с `active:false` (`n8n-workflows/`). ⚠️ **Импорт на VPS не выполнен** — из CC-сессии нет SSH/Sistem MCP. Ждёт Тараса (code-server/Termius) или подключения Sistem MCP. Регистрация в `bridge_n8n_workflows` — после импорта.
+- ⏸ Sprint 3 (cc-daemon / CC Bridge) — **DEFER v1.1** (см. `HANDOVERS/sistem/decisions.md`).
+- ✅ Sprint 6 — Skill Resolver v0.6 (rule + niche auto-switch), smoke 19/19.
+- ✅ Sprint 7 — universality: 4-й проект `resto-denia` (ниша restaurant), 5/5 packs схема-валидны, резолвер отрабатывает без правок кода. ⚠️ Live `sistem_command` не прогонян (нет MCP) — доказано локально резолвером+схемой.
+
+**Расхождение:** в `examples/` два ресторанных пака — `costa-blanca-restaurant` (bistro-marina) и новый `resto-denia`, одна ниша `restaurant`. Оставить один — решает Тарас.
 
 ## 8. Регламент синхронизации
 
