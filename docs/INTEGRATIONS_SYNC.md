@@ -106,7 +106,7 @@ Live remote-коннекторы, работают уже сейчас. В Sprin
 ## 7. Расхождения и вопросы
 
 **Статус спринтов на 2026-07-08 (Claude Code):**
-- ✅ Sprint 2 — 5 n8n workflow готовы с `active:false` (`n8n-workflows/`). ⚠️ **Импорт на VPS не выполнен** — из CC-сессии нет SSH/Sistem MCP. Ждёт Тараса (code-server/Termius) или подключения Sistem MCP. Регистрация в `bridge_n8n_workflows` — после импорта.
+- ✅ **Sprint 2 закрыт 08.07:** 5 workflow импортированы в n8n, зарегистрированы в `bridge_n8n_workflows` (count=5), `active:false`.
 - ⏸ Sprint 3 (cc-daemon / CC Bridge) — **DEFER v1.1** (см. `HANDOVERS/sistem/decisions.md`).
 - ✅ Sprint 6 — Skill Resolver v0.6 (rule + niche auto-switch), smoke 19/19.
 - ✅ Sprint 7 — universality: 4-й проект `resto-denia` (ниша restaurant), 5/5 packs схема-валидны, резолвер отрабатывает без правок кода. ⚠️ Live `sistem_command` не прогонян (нет MCP) — доказано локально резолвером+схемой.

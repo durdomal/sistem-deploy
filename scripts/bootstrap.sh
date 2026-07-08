@@ -29,13 +29,33 @@ mkdir -p "$INSTALL_ROOT"/{app,db,deploy,scripts,data/postgres,data/redis}
 mkdir -p /var/www/letsencrypt
 
 log "2/7 Копируем содержимое sistem-core → $INSTALL_ROOT"
-rsync -a --delete \
-    --exclude 'deploy/.env' \
-    --exclude 'data' \
-    "$REPO_ROOT/" "$INSTALL_ROOT/"
+if [[ "$REPO_ROOT" == "$INSTALL_ROOT" ]]; then
+    log "  repo уже в $INSTALL_ROOT — копирование не нужно, пропускаю"
+elif command -v rsync >/dev/null 2>&1; then
+    rsync -a --delete \
+        --exclude 'deploy/.env' \
+        --exclude 'data' \
+        "$REPO_ROOT/" "$INSTALL_ROOT/"
+else
+    log "  rsync не найден — cp -a fallback (сохраняю deploy/.env, пропускаю data/)"
+    _keep_env="$(mktemp)"
+    if [[ -f "$INSTALL_ROOT/deploy/.env" ]]; then
+        cp -a "$INSTALL_ROOT/deploy/.env" "$_keep_env"
+    fi
+    for _item in "$REPO_ROOT"/*; do
+        if [[ "$(basename "$_item")" == "data" ]]; then
+            continue
+        fi
+        cp -a "$_item" "$INSTALL_ROOT/"
+    done
+    if [[ -s "$_keep_env" ]]; then
+        cp -a "$_keep_env" "$INSTALL_ROOT/deploy/.env"
+    fi
+    rm -f "$_keep_env"
+fi
 
 log "3/7 Проверяем зависимости"
-for bin in docker nginx certbot rsync openssl; do
+for bin in docker nginx certbot openssl; do
     command -v "$bin" >/dev/null || die "нет $bin — установи (apt install $bin)"
 done
 docker compose version >/dev/null 2>&1 || die "нет docker compose v2"

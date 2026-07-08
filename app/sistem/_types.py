@@ -49,9 +49,13 @@ class UUID_(TypeDecorator):
 # JSONB → JSON (эквивалент для наших целей)
 JSONB_ = JSON
 
+# TODO(v1.1): make dialect-aware like UUID_/INET_ (native postgresql.ARRAY in prod).
+# Current: stored as JSON. Read works, ORM writes not exercised on v1.0 paths.
 # ARRAY(Text) → JSON (список строк)
 ARRAY_ = JSON
 
+# TODO(v1.1): make dialect-aware (native postgresql.ARRAY(UUID) in prod). See ARRAY_ above.
+# Current: stored as JSON. Read works, ORM writes not exercised on v1.0 paths.
 # UUIDArray → JSON (список строк)
 UUIDArray_ = JSON
 
